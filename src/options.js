@@ -5,6 +5,7 @@ function loadOptions() {
     document.querySelector('#userBlacklist textarea').value = options.userBlacklist;
     document.querySelector('#userWhitelist textarea').value = options.userWhitelist;
     document.querySelector('#webBlacklists textarea').value = options.webBlacklists;
+    document.querySelector('#displayContextMenusOptions').checked = options.displayContextMenusOptions;
 
     return new Promise((resolve, reject) => {
       chrome.runtime.sendMessage({
@@ -22,11 +23,13 @@ function saveOptions() {
   const userBlacklist = document.querySelector('#userBlacklist textarea').value;
   const userWhitelist = document.querySelector('#userWhitelist textarea').value;
   const webBlacklists = document.querySelector('#webBlacklists textarea').value;
+  const displayContextMenusOptions = document.querySelector('#displayContextMenusOptions').checked;
 
   return utils.setOptions({
     userBlacklist: validator.validateRulesText(userBlacklist),
     userWhitelist: validator.validateRulesText(userWhitelist),
-    webBlacklists: webBlacklists
+    webBlacklists: webBlacklists,
+    displayContextMenusOptions: displayContextMenusOptions,
   }).then(() => {
     if (history.length > 1) {
       history.go(-1);
@@ -59,4 +62,19 @@ document.addEventListener('DOMContentLoaded', (event) => {
     event.preventDefault();
     saveOptions();
   });
+
+  /**
+   * NodeList.prototype.forEach()
+   * Chrome >= 51, Fx >= 50
+   *
+   * Following makes sure saveOptions work fine
+   */
+  document.querySelectorAll('.tab-link').forEach(el => {
+    el.addEventListener('click', () => {
+      event.preventDefault();
+      location.replace(el.href);
+    });
+  })
+
+  location.replace('#tab0');
 });
