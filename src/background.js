@@ -60,7 +60,7 @@ function updateContextMenus() {
     });
   };
 
-  const createContextMenusOptions = function() {
+  const createContextMenuCommands = function() {
     try {
       chrome.contextMenus.create({
         title: utils.lang("blockTab"),
@@ -111,8 +111,8 @@ function updateContextMenus() {
 
   chrome.contextMenus.removeAll(() => {
     utils.getDefaultOptions().then((options) => {
-      if (options.displayContextMenusOptions) {
-        createContextMenusOptions();
+      if (options.displayContextMenuCommands) {
+        createContextMenuCommands();
       }
     });
   });

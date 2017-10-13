@@ -5,7 +5,7 @@ function loadOptions() {
     document.querySelector('#userBlacklist textarea').value = options.userBlacklist;
     document.querySelector('#userWhitelist textarea').value = options.userWhitelist;
     document.querySelector('#webBlacklists textarea').value = options.webBlacklists;
-    document.querySelector('#displayContextMenusOptions').checked = options.displayContextMenusOptions;
+    document.querySelector('#displayContextMenuCommands').checked = options.displayContextMenuCommands;
 
     return new Promise((resolve, reject) => {
       chrome.runtime.sendMessage({
@@ -23,13 +23,13 @@ function saveOptions() {
   const userBlacklist = document.querySelector('#userBlacklist textarea').value;
   const userWhitelist = document.querySelector('#userWhitelist textarea').value;
   const webBlacklists = document.querySelector('#webBlacklists textarea').value;
-  const displayContextMenusOptions = document.querySelector('#displayContextMenusOptions').checked;
+  const displayContextMenuCommands = document.querySelector('#displayContextMenuCommands').checked;
 
   return utils.setOptions({
     userBlacklist: validator.validateRulesText(userBlacklist),
     userWhitelist: validator.validateRulesText(userWhitelist),
     webBlacklists: webBlacklists,
-    displayContextMenusOptions: displayContextMenusOptions,
+    displayContextMenuCommands: displayContextMenuCommands,
   }).then(() => {
     if (history.length > 1) {
       history.go(-1);
